@@ -18,7 +18,7 @@ formularioLogin.addEventListener('submit',(e)=>{
 function peticionLogin(usuario,pass){
     cuentas.forEach(cuenta => {
         if(cuenta.usuario==usuario){
-            if(cuenta.password==pass) window.location.href = "/ventanas/inicio.html?id="+cuenta.idCuenta;
+            if(cuenta.password==pass) window.location.href = "../ventanas/inicio.html?id="+cuenta.idCuenta;
         }
     });
 }
