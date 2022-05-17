@@ -1,17 +1,20 @@
 const cuentas=[
     {
+        idCuenta:1,
         nombre:'Mali',
         usuario:'Mali',
         password:'m1234a',
         saldo:200
     },
     {
+        idCuenta:2,
         nombre:'Gera',
         usuario:'Gera',
         password:'gg1212',
         saldo:290
     },
     {
+        idCuenta:3,
         nombre:'Maui',
         usuario:'Maui',
         password:'m1a2u3i4',
