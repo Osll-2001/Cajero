@@ -1,0 +1,20 @@
+const cuentas=[
+    {
+        nombre:'Mali',
+        usuario:'Mali',
+        password:'m1234a',
+        saldo:200
+    },
+    {
+        nombre:'Gera',
+        usuario:'Gera',
+        password:'gg1212',
+        saldo:290
+    },
+    {
+        nombre:'Maui',
+        usuario:'Maui',
+        password:'m1a2u3i4',
+        saldo:67
+    }
+]
