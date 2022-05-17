@@ -1,27 +1,25 @@
-let inputUsuario=document.getElementById('inputUsuario');
-let inputPass=document.getElementById('inputPass');
-let formularioLogin=document.getElementById('formLogin');
- 
-let datosLogin={
+//tomamos los parametros pasados
+const parametros = window.location.search;
+//Creamos la instancia
+const urlParams = new URLSearchParams(parametros);
+//Accedemos a el id
+let id = urlParams.get('id');
+let datosCuenta={
+    idCuenta:'',
+    nombre:'',
     usuario:'',
-    pass:''
-}
+    password:'',
+    saldo:0
+};
 
-formularioLogin.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    datosLogin.usuario=inputUsuario.value;
-    datosLogin.pass=inputPass.value;
-    peticionLogin(datosLogin.usuario,datosLogin.pass);
-    formularioLogin.reset();
-});
-
-function peticionLogin(usuario,pass){
+document.addEventListener('DOMContentLoaded',()=>{
     cuentas.forEach(cuenta => {
-        if(cuenta.usuario==usuario){
-            if(cuenta.password==pass) window.location.href = "./ventanas/inicio.html?id="+cuenta.idCuenta;
+        if(cuenta.idCuenta==id){
+            datosCuenta=cuenta;
         }
     });
-}
+    console.log(datosCuenta);
+});
 
 
 
