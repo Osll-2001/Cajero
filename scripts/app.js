@@ -55,6 +55,16 @@ function consultaSaldo(){
     }
 }
 
+//No negativos
+function noNegativos(input){
+  input.onkeydown = function(e) {
+    if(!((e.keyCode > 95 && e.keyCode < 106)
+      || (e.keyCode > 47 && e.keyCode < 58) 
+      || e.keyCode == 8)) {
+        return false;
+    }
+}
+}
 
 //FUNCIONES PARA INGREGAR MONTO
 function crearDivIngresar(){
@@ -66,7 +76,9 @@ function crearDivIngresar(){
   inputMonto.classList.add('mx-2','rounded-3');
   inputMonto.style.width=100+"px";
   inputMonto.type='Number';
-  inputMonto.placeholder='0.00'
+  inputMonto.placeholder='0.00';
+  inputMonto.min=0;
+  noNegativos(inputMonto);
   var btnIngresar=document.createElement('button');
   btnIngresar.classList.add('bg-success','text-white','text-center','border-success','rounded-3','my-3','bi','bi-check-lg');
   var btnCancelar=document.createElement('button');
