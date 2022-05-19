@@ -10,6 +10,10 @@ let nombreCompleto = document.getElementById("nombreCompleto");
 let fotoPerfil=document.getElementById('foto');
 //Cuerpo Elemento
 let boxInfoAcciones=document.getElementById('info_acciones');
+//OPCIONES
+let aConsultar=document.getElementById('consultar');
+let aIngresar=document.getElementById('ingresar');
+let aRetirar=document.getElementById('retirar');
 
 //Objeto para almacenar valores de mi cuenta
 let datosCuenta = {
@@ -48,8 +52,24 @@ function borrarElementosInfo(){
   }
 }
 
+//DESAHIBILITA LAS OPCIONES
+function deshabilitarOpciones(){
+  aConsultar.style.pointerEvents='none';
+  aIngresar.style.pointerEvents='none';
+  aRetirar.style.pointerEvents='none';
+}
+
+//HABILITAR OPCIONES
+function habilitarOpciones(){
+  aConsultar.style.pointerEvents='auto';
+  aIngresar.style.pointerEvents='auto';
+  aRetirar.style.pointerEvents='auto';
+}
+
 //Funciones para consultar saldo
 function consultaSaldo(){
+    //DESHABILITA LAS OPCIONES
+    deshabilitarOpciones();
     const divSaldo=document.createElement('div');
     var btnOK=document.createElement('button');
     const btnVerMov=document.createElement('button');
@@ -67,6 +87,8 @@ function consultaSaldo(){
     btnOK.onclick=function(){
       if(btnOK.onclick){
            borrarElementosInfo();
+           //VUELVE A HABILITAR LAS DEMAS OPCIONES
+           habilitarOpciones();
       }
     }
     btnVerMov.onclick=function(){
@@ -149,10 +171,9 @@ function verMovimientos(btnVerMov){
 //No negativos
 function noNegativos(input){
   input.onkeydown = function(e) {
-    alert(e.keyCode);
     if(!((e.keyCode > 95 && e.keyCode < 106)
       || (e.keyCode > 47 && e.keyCode < 58) 
-      || e.keyCode == 8 || e.keyCode==190 || e.keyCode==109)) {
+      || e.keyCode == 8 || e.keyCode==190)) {
         return false;
     }
 }
@@ -167,6 +188,8 @@ function crearDivAccion(tipo){
   //CAMBIA EL TEXTO DEPENDIENDO DE EL TIPO DE ACCION
   if(tipo==1)divIngreso.textContent="Monto a ingresar:";
   else divIngreso.textContent="Monto a retirar: ";
+  //DESHABILITA LAS OPCIONES
+  deshabilitarOpciones();
   divIngreso.style.fontSize=25+"px";
   var inputMonto=document.createElement('input');
   inputMonto.classList.add('mx-2','rounded-3');
@@ -191,6 +214,8 @@ function crearDivAccion(tipo){
   }
   //EVENTO DEL BOTON CANCELAR
   btnCancelar.onclick=function(){
+    //VUELVE A HABILITAR LAS ACCIONES
+    habilitarOpciones();
     borrarElementosInfo();
   }
 }
@@ -301,6 +326,8 @@ function mostrarNSaldo(cantidad,nSaldo,tipo){
     //EVENTO
     btnOK.onclick=function(){
       borrarElementosInfo();
+      //VUELVE A HABILITAR LAS OPCIONES
+      habilitarOpciones();
     } 
 }
 
