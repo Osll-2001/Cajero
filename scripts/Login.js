@@ -27,17 +27,11 @@ function menDIncorrectos(mensaje){
   }
 
 function peticionLogin(usuario,pass){
-    for (const cuenta of cuentas) {
-        if(cuenta.usuario==usuario){
-            if(cuenta.password==pass) window.location.href = "./ventanas/inicio.html?id="+cuenta.idCuenta;
-            else menDIncorrectos("La contraseña esta incorrecta!");
-            break;
-        }
-        else{
-            menDIncorrectos("EL Usuario No Existe!");
-            break;
-        }
-    }
+
+    const usuarioEncontrado = cuentas.filter(cuenta => cuenta.usuario == usuario).filter(cuenta=>cuenta.password==pass);
+    
+    if(usuarioEncontrado.length) window.location.href = "./ventanas/inicio.html?id="+usuarioEncontrado[0].idCuenta;
+    else menDIncorrectos("El Usuario o la contraseña estan incorrectas");
 }
 
 

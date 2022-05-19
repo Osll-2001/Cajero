@@ -22,14 +22,17 @@ let datosCuenta = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  cuentas.forEach((cuenta) => {
-    if (localStorage.getItem("cuenta_" + id))
-      datosCuenta = JSON.parse(localStorage.getItem("cuenta_" + id));
-    else if (cuenta.idCuenta == id) datosCuenta = cuenta;
+ //RELLENA EL OBJETO DATOS CUENTA 
+  for (const cuenta of cuentas) {
+    if(cuenta.idCuenta==id){
+      if (localStorage.getItem("cuenta_" + id)) datosCuenta = JSON.parse(localStorage.getItem("cuenta_" + id));
+      else if (cuenta.idCuenta == id) datosCuenta = cuenta;
+      break;
+    }
+  }
+  nombreCompleto.textContent = datosCuenta.nombre;
+  fotoPerfil.setAttribute("src",datosCuenta.foto);
 
-    nombreCompleto.textContent = datosCuenta.nombre;
-    fotoPerfil.setAttribute("src",datosCuenta.foto);
-  });
 });
 
 //BORRAR TODO DE DIV INFO
@@ -43,17 +46,88 @@ function borrarElementosInfo(){
 function consultaSaldo(){
     const divSaldo=document.createElement('div');
     var btnOK=document.createElement('button');
+    const btnVerMov=document.createElement('button');
     divSaldo.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75');
     divSaldo.textContent="Su saldo es de: $"+datosCuenta.saldo;
     divSaldo.style.fontSize=25+"px";
     btnOK.textContent="OK!";
     btnOK.classList.add('bg-success','text-white','text-center','border-success','rounded-3','mx-2');
+    btnVerMov.textContent="Movimientos";
+    btnVerMov.classList.add('bg-primary','text-white','text-center','border-primary','rounded-3','mx-2');
     divSaldo.appendChild(btnOK);
+    divSaldo.appendChild(btnVerMov);
     boxInfoAcciones.appendChild(divSaldo);
     //Cierra el Div Al presionar el boton
     btnOK.onclick=function(){
         if(btnOK.onclick){
            borrarElementosInfo();
+        }
+    }
+    btnVerMov.onclick=function(){
+      //SE MUESTRA LA TABLA DE LOS MOVIMIENTOS Y SE PASA COMO PARAMETRO EL BOTON VER
+      verMovimientos(btnVerMov);
+    }
+}
+
+//AGREGAR DATOS A LAS FILAS DE LA TABLA
+function agregarFilasMov(tbody){
+  let movimientos=JSON.parse(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta));
+    movimientos.forEach(movimiento=> {
+      let filaCuerpo = document.createElement('tr');
+      filaCuerpo.style.backgroundColor="#212121";
+      filaCuerpo.style.color="#fafafa";
+      let elemFilaTipo = document.createElement('td');
+      elemFilaTipo.innerHTML = movimiento.tipo;
+      let elemFilaMonto = document.createElement('td');
+      elemFilaMonto.innerHTML =movimiento.cantidad;
+      let elemFilaFecha = document.createElement('td');
+      elemFilaFecha.innerHTML =movimiento.fecha;
+      let elemFilaHora = document.createElement('td');
+      elemFilaHora.innerHTML =movimiento.hora;
+      filaCuerpo.appendChild(elemFilaTipo);
+      filaCuerpo.appendChild(elemFilaMonto);
+      filaCuerpo.appendChild(elemFilaFecha);
+      filaCuerpo.appendChild(elemFilaHora);
+      tbody.appendChild(filaCuerpo);
+    });
+}
+
+//VER MOVIMIENTOS
+function verMovimientos(btnVerMov){
+    const tblMovimientos=document.createElement('table');
+    tblMovimientos.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    tblMovimientos.appendChild(thead);
+    tblMovimientos.appendChild(tbody);
+    let cabezera=document.createElement('tr');
+    cabezera.style.backgroundColor="#fafafa";
+    cabezera.style.color="#212121";
+    let thTipo = document.createElement('th');
+    thTipo.innerHTML = "Tipo";
+    let thMonto = document.createElement('th');
+    thMonto.innerHTML = "Monto";
+    let thFecha = document.createElement('th');
+    thFecha.innerHTML = "Fecha";
+    let thHora = document.createElement('th');
+    thHora.innerHTML = "Hora";
+    cabezera.appendChild(thTipo);
+    cabezera.appendChild(thMonto);
+    cabezera.appendChild(thFecha);
+    cabezera.appendChild(thHora);
+    thead.appendChild(cabezera);
+    //RECOPILAMOS LOS MOVIMIENTOS HECHOS
+    agregarFilasMov(tbody);
+    boxInfoAcciones.appendChild(tblMovimientos);
+    //CAMBIA EL TEXTO DEL BOTON
+    btnVerMov.textContent="Ocultar Movimientos";
+    btnVerMov.onclick=function(){
+      //BORRA LA TABLA Y CAMBIA EL TEXTO
+         tblMovimientos.style.display='none';
+         btnVerMov.textContent="Movimientos";
+         //PARA QUE SE PUEDE VER DE NUEVO LOS MOVIMIENTOS
+         btnVerMov.onclick=function(){
+          verMovimientos(btnVerMov);
         }
     }
 }
@@ -129,6 +203,19 @@ function menAdvertencia(mensaje){
   }, 3000);
 }
 
+//REGISTRA EL MOVIMIENTO
+function registMov(tipoMov,cantidadMov){
+  let Fecha = new Date();
+  let movimientoHechos=[];
+  //COMPRUEBA SI HAY MOVIMIENTOS PARA QUE SE LE ASIGNEN A EL ARRAY CREADO
+  if(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta)){
+    movimientoHechos=JSON.parse(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta));
+  }
+  let nuevoMov={tipo:tipoMov,cantidad:"$"+cantidadMov,fecha:Fecha.toLocaleDateString(), hora: Fecha.toLocaleTimeString()};
+  movimientoHechos.push(nuevoMov);
+  localStorage.setItem('Movimientos_'+'c'+datosCuenta.idCuenta,JSON.stringify(movimientoHechos));
+}
+
 //FUNCION PARA HACER EL PROCESO DE INGRESO A EL SALDO
 function ingresar(ingreso) {
   let saldoNuevo=datosCuenta.saldo+ingreso;
@@ -138,6 +225,7 @@ function ingresar(ingreso) {
       cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
       borrarElementosInfo();
       mostrarNSaldo(ingreso,saldoNuevo,1);
+      registMov('Ingreso',ingreso);
   }
 }
 
@@ -151,6 +239,7 @@ function retirar(retiro){
       cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
       borrarElementosInfo();
       mostrarNSaldo(retiro,saldoNuevo,2);
+      registMov('Retiro',retiro);
   }
 }
 
