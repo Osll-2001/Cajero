@@ -106,7 +106,7 @@ function agregarFilasMov(tbody){
 //VER MOVIMIENTOS
 function verMovimientos(btnVerMov){
     const tblMovimientos=document.createElement('table');
-    tblMovimientos.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75');
+    tblMovimientos.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75','mb-5');
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');
     tblMovimientos.appendChild(thead);
