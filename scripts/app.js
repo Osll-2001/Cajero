@@ -5,10 +5,10 @@ const urlParams = new URLSearchParams(parametros);
 //Accedemos a el id
 let id = urlParams.get("id");
 
-//NaV
+//Nav Elementos
 let nombreCompleto = document.getElementById("nombreCompleto");
 let fotoPerfil=document.getElementById('foto');
-//Cuerpo
+//Cuerpo Elemento
 let boxInfoAcciones=document.getElementById('info_acciones');
 
 //Objeto para almacenar valores de mi cuenta
@@ -21,15 +21,21 @@ let datosCuenta = {
   foto:''
 };
 
-document.addEventListener("DOMContentLoaded", () => {
- //RELLENA EL OBJETO DATOS CUENTA 
+
+//RELLENA EL OBJETO DATOS CUENTA 
+function rellenarDatos(){
   for (const cuenta of cuentas) {
     if(cuenta.idCuenta==id){
       if (localStorage.getItem("cuenta_" + id)) datosCuenta = JSON.parse(localStorage.getItem("cuenta_" + id));
       else if (cuenta.idCuenta == id) datosCuenta = cuenta;
+      //CUANDO ENCUENTRE LA CUENTA ROMPE EL FOR
       break;
     }
   }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  rellenarDatos();
   nombreCompleto.textContent = datosCuenta.nombre;
   fotoPerfil.setAttribute("src",datosCuenta.foto);
 
@@ -53,15 +59,15 @@ function consultaSaldo(){
     btnOK.textContent="OK!";
     btnOK.classList.add('bg-success','text-white','text-center','border-success','rounded-3','mx-2');
     btnVerMov.textContent="Movimientos";
-    btnVerMov.classList.add('bg-primary','text-white','text-center','border-primary','rounded-3','mx-2');
+    btnVerMov.classList.add('bg-primary','text-white','text-center','border-primary','rounded-3','mx-2','my-3');
     divSaldo.appendChild(btnOK);
     divSaldo.appendChild(btnVerMov);
     boxInfoAcciones.appendChild(divSaldo);
-    //Cierra el Div Al presionar el boton
+    //Borra lo que esta en el div Info al presionar el boton
     btnOK.onclick=function(){
-        if(btnOK.onclick){
+      if(btnOK.onclick){
            borrarElementosInfo();
-        }
+      }
     }
     btnVerMov.onclick=function(){
       //SE MUESTRA LA TABLA DE LOS MOVIMIENTOS Y SE PASA COMO PARAMETRO EL BOTON VER
@@ -69,9 +75,10 @@ function consultaSaldo(){
     }
 }
 
-//AGREGAR DATOS A LAS FILAS DE LA TABLA
+//AGREGAR DATOS A LAS FILAS DE LA TABLA MOVIMIENTOS
 function agregarFilasMov(tbody){
-  let movimientos=JSON.parse(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta));
+  if(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta)){
+    let movimientos=JSON.parse(localStorage.getItem('Movimientos_'+'c'+datosCuenta.idCuenta));
     movimientos.forEach(movimiento=> {
       let filaCuerpo = document.createElement('tr');
       filaCuerpo.style.backgroundColor="#212121";
@@ -90,6 +97,10 @@ function agregarFilasMov(tbody){
       filaCuerpo.appendChild(elemFilaHora);
       tbody.appendChild(filaCuerpo);
     });
+  }
+  else{
+    menAdvertencia("No Existen Movimientos");
+  }
 }
 
 //VER MOVIMIENTOS
@@ -116,11 +127,12 @@ function verMovimientos(btnVerMov){
     cabezera.appendChild(thFecha);
     cabezera.appendChild(thHora);
     thead.appendChild(cabezera);
+    boxInfoAcciones.appendChild(tblMovimientos);
     //RECOPILAMOS LOS MOVIMIENTOS HECHOS
     agregarFilasMov(tbody);
-    boxInfoAcciones.appendChild(tblMovimientos);
     //CAMBIA EL TEXTO DEL BOTON
-    btnVerMov.textContent="Ocultar Movimientos";
+    btnVerMov.textContent="Ocultar Mov.";
+    //EVENTO DEL BOTON VER MOVIMIENTOS
     btnVerMov.onclick=function(){
       //BORRA LA TABLA Y CAMBIA EL TEXTO
          tblMovimientos.style.display='none';
@@ -169,13 +181,15 @@ function crearDivAccion(tipo){
   divIngreso.appendChild(btnIngresar);
   divIngreso.appendChild(btnCancelar);
   boxInfoAcciones.appendChild(divIngreso);
+  //EVENTO DEL BOTON INGRESAR(ACEPTAR)
   btnIngresar.onclick=function(){
-      if(tipo==1) ingresar(Number(inputMonto.value));
-      else if(tipo==2) retirar(Number(inputMonto.value));
+    if(tipo==1) ingresar(Number(inputMonto.value));
+    else if(tipo==2) retirar(Number(inputMonto.value));
   }
+  //EVENTO DEL BOTON CANCELAR
   btnCancelar.onclick=function(){
     borrarElementosInfo();
-}
+  }
 }
 
 //MODIFICA EL SALDO
@@ -221,11 +235,11 @@ function ingresar(ingreso) {
   let saldoNuevo=datosCuenta.saldo+ingreso;
   if (saldoNuevo > 990) {
     menAdvertencia("No se puede tener mas de $990 en esta cuenta!");
-  } else {
-      cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
-      borrarElementosInfo();
-      mostrarNSaldo(ingreso,saldoNuevo,1);
-      registMov('Ingreso',ingreso);
+  }else{
+    cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
+    borrarElementosInfo();
+    mostrarNSaldo(ingreso,saldoNuevo,1);
+    registMov('Ingreso',ingreso);
   }
 }
 
@@ -236,10 +250,10 @@ function retirar(retiro){
     menAdvertencia("No se puede tener menos de $10 en esta cuenta!");
   }
   else{
-      cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
-      borrarElementosInfo();
-      mostrarNSaldo(retiro,saldoNuevo,2);
-      registMov('Retiro',retiro);
+    cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
+    borrarElementosInfo();
+    mostrarNSaldo(retiro,saldoNuevo,2);
+    registMov('Retiro',retiro);
   }
 }
 
@@ -273,10 +287,9 @@ function mostrarNSaldo(cantidad,nSaldo,tipo){
     divNSaldo.appendChild(pNSaldo);
     divNSaldo.appendChild(btnOK);
     boxInfoAcciones.appendChild(divNSaldo);
+    //EVENTO
     btnOK.onclick=function(){
-      if(btnOK.onclick){
-         borrarElementosInfo();
-      }
-  }
+      borrarElementosInfo();
+    } 
 }
 
