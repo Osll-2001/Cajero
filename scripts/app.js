@@ -152,7 +152,7 @@ function noNegativos(input){
     alert(e.keyCode);
     if(!((e.keyCode > 95 && e.keyCode < 106)
       || (e.keyCode > 47 && e.keyCode < 58) 
-      || e.keyCode == 8 || e.keyCode==190 || e.keyCode==69)) {
+      || e.keyCode == 8 || e.keyCode==190 || e.keyCode==109)) {
         return false;
     }
 }
