@@ -160,7 +160,7 @@ function noNegativos(input){
 //CREA UN DIV PARA INGRESAR EL MONTO A RETIRAR O INGRESAR
 function crearDivAccion(tipo){
   const divIngreso=document.createElement('div');
-  divIngreso.classList.add('bg-black','text-white','p-4','text-center','bg-opacity-75','mx-auto','col-xl-3','col-6','col-sm-6','col-md-5','col-lg-4');
+  divIngreso.classList.add('bg-black','text-white','p-4','text-center','bg-opacity-75','mx-auto','col-xl-3','col-9','col-sm-6','col-md-5','col-lg-4');
   //CAMBIA EL TEXTO DEPENDIENDO DE EL TIPO DE ACCION
   if(tipo==1)divIngreso.textContent="Monto a ingresar:";
   else divIngreso.textContent="Monto a retirar: ";
