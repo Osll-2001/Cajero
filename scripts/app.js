@@ -106,7 +106,7 @@ function agregarFilasMov(tbody){
 //VER MOVIMIENTOS
 function verMovimientos(btnVerMov){
     const tblMovimientos=document.createElement('table');
-    tblMovimientos.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75','mb-5');
+    tblMovimientos.classList.add('bg-black','text-white','border-danger','p-4','text-center','mx-auto','col-xl-3','col-10','col-sm-6','col-md-5','col-lg-3','bg-opacity-75','mb-2');
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');
     tblMovimientos.appendChild(thead);
@@ -131,12 +131,14 @@ function verMovimientos(btnVerMov){
     //RECOPILAMOS LOS MOVIMIENTOS HECHOS
     agregarFilasMov(tbody);
     //CAMBIA EL TEXTO DEL BOTON
-    btnVerMov.textContent="Ocultar Mov.";
+    btnVerMov.textContent="Ocultar Movimientos";
+    btnVerMov.classList.add('bg-danger','border-danger');
     //EVENTO DEL BOTON VER MOVIMIENTOS
     btnVerMov.onclick=function(){
       //BORRA LA TABLA Y CAMBIA EL TEXTO
          tblMovimientos.style.display='none';
          btnVerMov.textContent="Movimientos";
+         btnVerMov.classList.remove('bg-danger','border-danger');
          //PARA QUE SE PUEDE VER DE NUEVO LOS MOVIMIENTOS
          btnVerMov.onclick=function(){
           verMovimientos(btnVerMov);
@@ -183,8 +185,8 @@ function crearDivAccion(tipo){
   boxInfoAcciones.appendChild(divIngreso);
   //EVENTO DEL BOTON INGRESAR(ACEPTAR)
   btnIngresar.onclick=function(){
-    if(tipo==1) ingresar(Number(inputMonto.value));
-    else if(tipo==2) retirar(Number(inputMonto.value));
+    if(tipo==1 && !inputMonto.value<=0) ingresar(Number(inputMonto.value));
+    else if(tipo==2  && !inputMonto.value<=0) retirar(Number(inputMonto.value));
   }
   //EVENTO DEL BOTON CANCELAR
   btnCancelar.onclick=function(){
