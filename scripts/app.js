@@ -7,6 +7,7 @@ let id = urlParams.get("id");
 
 //NaV
 let nombreCompleto = document.getElementById("nombreCompleto");
+let fotoPerfil=document.getElementById('foto');
 //Cuerpo
 let boxInfoAcciones=document.getElementById('info_acciones');
 
@@ -17,6 +18,7 @@ let datosCuenta = {
   usuario: "",
   password: "",
   saldo: 0,
+  foto:''
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -26,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (cuenta.idCuenta == id) datosCuenta = cuenta;
 
     nombreCompleto.textContent = datosCuenta.nombre;
+    fotoPerfil.setAttribute("src",datosCuenta.foto);
   });
 });
 
@@ -82,6 +85,7 @@ function crearDivAccion(tipo){
   inputMonto.type='Number';
   inputMonto.placeholder='0.00';
   inputMonto.min=0;
+  //No permite que existan montos negativos
   noNegativos(inputMonto);
   var btnIngresar=document.createElement('button');
   btnIngresar.classList.add('bg-success','text-white','text-center','border-success','rounded-3','my-3','bi','bi-check-lg');
@@ -120,6 +124,9 @@ function menAdvertencia(mensaje){
   divMenAdvertencia.classList.add('bg-danger','text-white','border-danger','p-2','text-center','col-xl-3','col-6','col-sm-6','col-md-5','col-lg-4','mx-auto');
   divMenAdvertencia.textContent=mensaje;
   boxInfoAcciones.appendChild(divMenAdvertencia);
+  setTimeout(() => {
+    divMenAdvertencia.style.display="none";
+  }, 3000);
 }
 
 //FUNCION PARA HACER EL PROCESO DE INGRESO A EL SALDO
