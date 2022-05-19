@@ -29,9 +29,9 @@ function menDIncorrectos(mensaje){
 function peticionLogin(usuario,pass){
 
     const usuarioEncontrado = cuentas.filter(cuenta => cuenta.usuario == usuario).filter(cuenta=>cuenta.password==pass);
-    
+
     if(usuarioEncontrado.length) window.location.href = "./ventanas/inicio.html?id="+usuarioEncontrado[0].idCuenta;
-    else menDIncorrectos("El Usuario o la contraseña estan incorrectas");
+    else menDIncorrectos("El Usuario y/o la contraseña estan incorrectas");
 }
 
 
