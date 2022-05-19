@@ -185,8 +185,8 @@ function crearDivAccion(tipo){
   boxInfoAcciones.appendChild(divIngreso);
   //EVENTO DEL BOTON INGRESAR(ACEPTAR)
   btnIngresar.onclick=function(){
-    if(tipo==1 && !inputMonto.value<=0) ingresar(Number(inputMonto.value));
-    else if(tipo==2  && !inputMonto.value<=0) retirar(Number(inputMonto.value));
+    if(tipo==1) ingresar(Number(inputMonto.value));
+    else if(tipo==2) retirar(Number(inputMonto.value));
   }
   //EVENTO DEL BOTON CANCELAR
   btnCancelar.onclick=function(){
@@ -211,7 +211,7 @@ function cambioSaldo(idCuenta,saldoNuevo){
 //MENSAJE DE ADVERTENCIA
 function menAdvertencia(mensaje){
   const divMenAdvertencia=document.createElement('div');
-  divMenAdvertencia.classList.add('bg-danger','text-white','border-danger','p-2','text-center','col-xl-3','col-6','col-sm-6','col-md-5','col-lg-4','mx-auto');
+  divMenAdvertencia.classList.add('bg-danger','text-white','border-danger','p-2','text-center','col-xl-3','col-9','col-sm-6','col-md-5','col-lg-4','mx-auto');
   divMenAdvertencia.textContent=mensaje;
   boxInfoAcciones.appendChild(divMenAdvertencia);
   setTimeout(() => {
@@ -234,28 +234,36 @@ function registMov(tipoMov,cantidadMov){
 
 //FUNCION PARA HACER EL PROCESO DE INGRESO A EL SALDO
 function ingresar(ingreso) {
-  let saldoNuevo=datosCuenta.saldo+ingreso;
-  if (saldoNuevo > 990) {
-    menAdvertencia("No se puede tener mas de $990 en esta cuenta!");
+  if(!ingreso>0){
+    menAdvertencia("No se pueden hacer depositos menores o iguales a $0");
   }else{
-    cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
-    borrarElementosInfo();
-    mostrarNSaldo(ingreso,saldoNuevo,1);
-    registMov('Ingreso',ingreso);
+    let saldoNuevo=datosCuenta.saldo+ingreso;
+    if (saldoNuevo > 990) {
+      menAdvertencia("No se puede tener mas de $990 en esta cuenta!");
+    }else{
+      cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
+      borrarElementosInfo();
+      mostrarNSaldo(ingreso,saldoNuevo,1);
+      registMov('Ingreso',ingreso);
+    }
   }
 }
 
 //FUNCION PARA RETIRAR DINERO
 function retirar(retiro){
-  let saldoNuevo=datosCuenta.saldo-retiro;
-  if(saldoNuevo<10){
-    menAdvertencia("No se puede tener menos de $10 en esta cuenta!");
-  }
-  else{
-    cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
-    borrarElementosInfo();
-    mostrarNSaldo(retiro,saldoNuevo,2);
-    registMov('Retiro',retiro);
+  if(!retiro>0){
+    menAdvertencia("No se pueden hacer retiros menores o iguales a $0");
+  }else{
+    let saldoNuevo=datosCuenta.saldo-retiro;
+    if(saldoNuevo<10){
+      menAdvertencia("No se puede tener menos de $10 en esta cuenta!");
+    }
+    else{
+      cambioSaldo(datosCuenta.idCuenta,saldoNuevo);
+      borrarElementosInfo();
+      mostrarNSaldo(retiro,saldoNuevo,2);
+      registMov('Retiro',retiro);
+    }
   }
 }
 
