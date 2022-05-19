@@ -31,20 +31,22 @@
         </div>
 
         <div class="row py-5">
-            <div class="col-12 col-sm-4 col-md-4 col-xl-4 col-xxl-4 my-2">
-                <div class="bg-dark w-100 text-white text-center py-3 py-xl-4 rounded-3 bg-opacity-75" id="boxCSaldo">
-                    <i class="bi bi-currency-dollar"></i>
-                    <a class="accion text-primary" onclick="consultaSaldo()">Consultar Saldo</a>
+            <div class="col-12 col-sm-4 col-md-4 col-xl-3 col-xxl-4 my-2 mx-auto">
+                <div class="bg-primary w-100 text-white text-center py-3 py-xl-4 rounded-3 " id="boxCSaldo">
+                    <i class="bi bi-currency-dollar fs-2 text-white pe-2"></i>
+                    <a class="accion text-white" onclick="consultaSaldo()">Consultar Saldo</a>
                 </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-xl-4 col-xxl-4 my-2">
-                <div class="bg-dark w-100 text-white text-center py-3 py-xl-4 rounded-3 bg-opacity-75" id="boxIngresarS">
-                    <a class="accion text-success" onclick="crearDivIngresar()">Ingresar Monto</a>
+            <div class="col-12 col-sm-4 col-md-4 col-xl-3 col-xxl-4 my-2 mx-auto">
+                <div class="bg-success w-100 text-white text-center py-3 py-xl-4 rounded-3" id="boxIngresarS">
+                    <i class="bi bi-piggy-bank fs-2 text-white pe-2"></i>
+                    <a class="accion text-white" onclick="crearDivAccion(1)">Ingresar Monto</a>
                 </div>
             </div>
-            <div class="col-12 col-sm-4 col-md-4 col-xl-4 col-xxl-4 my-2">
-                <div class="bg-dark w-100 text-white text-center py-3 py-xl-4 rounded-3 bg-opacity-75" id="boxRetirarS">
-                    <a class="accion text-danger">Retirar Monto</a>
+            <div class="col-12 col-sm-4 col-md-4 col-xl-3 mx-auto col-xxl-4 my-2">
+                <div class="bg-danger w-100 text-white text-center py-3 py-xl-4 rounded-3" id="boxRetirarS">
+                    <i class="bi bi-layer-backward fs-2 text-white pe-2"></i>
+                    <a class="accion text-white" onclick="crearDivAccion(2)">Retirar Monto</a>
                 </div>
             </div>
         </div>

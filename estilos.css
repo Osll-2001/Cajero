@@ -1,6 +1,6 @@
 body{
     background-color: #558fbb;
-    background-image: url('https://d31dn7nfpuwjnm.cloudfront.net/images/valoraciones/0034/7801/diferencia-tarjeta-credito-debito.png?1565359275');
+    background-image: url('./imagenes/fondo.png');
     background-size: 50%;
     background-repeat: no-repeat;
     background-position-x: center;
@@ -33,4 +33,5 @@ body{
     text-decoration: none;
     font-size: 20px;
     font-family:Arial, Helvetica, sans-serif;
+    font-weight:550;
 }
